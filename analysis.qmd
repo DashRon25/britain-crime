@@ -1,0 +1,66 @@
+---
+title: "analysis"
+author: "Ronit Dash"
+format: html
+execute:
+  echo: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+library(tidyverse)
+library(primer.data)
+library(brms)
+library(tidybayes)
+library(gtsummary)
+library(stringr)
+```
+<!-- Wisdom: -->
+
+<!-- Question: Which crimes are most likely to result in a culprit being found? -->
+
+<!-- Specific Question: If someone was to be the victim of a crime in Britain, how likely would a culprit be found? -->
+
+<!-- Units: Each Crime in Britain -->
+<!-- Outcome: Whether the culprit was found or not. -->
+<!-- Covariates: Crime Type, Location -->
+
+```{r}
+#| label: data
+x <- read.csv("West_Midlands_Crime.csv")
+set.seed(123)
+crime <- x |> sample_frac(.10) |> 
+  mutate(type = Crime.type, outcome = Last.outcome.category) |> 
+  mutate(SuspectIdentified = ifelse(outcome != "", 1, 0), ApproxLoc = LSOA.name)
+```
+
+
+```{r}
+#| cache: true
+#| warning: false
+fit <- brm(formula = SuspectIdentified ~ type + ApproxLoc, 
+           data = crime, 
+           family = bernoulli(), 
+           iter = 1200, 
+           warmup = 600, 
+           chains = 2, 
+           refresh = 0, 
+           silent = 2, 
+           seed = 99)
+```
+
+```{r}
+# fit
+#  fit |> add_epred_draws(newdata = ndata) |>
+#  ggplot(aes(x = type, y = .epred, color = Location)) +
+#    stat_summary(fun.data = mean_cl_normal, geom = "pointrange", position = position_dodge(width = 0.5)) +
+#    geom_line(aes(group = Location)) +
+#    labs(
+#      title = "Interaction between Type and Location",
+#      y = "Expected Probability of Suspect Identification",
+#      x = "Type"
+#    ) +
+#    theme_minimal()
+```
+
