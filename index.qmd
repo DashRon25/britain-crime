@@ -1,7 +1,97 @@
 ---
-title: "Britain Crime Analysis"
+title: "analysis"
+author: "Ronit Dash"
+format: html
+execute:
+  echo: false
 ---
 
-This is a Quarto website.
+```{r}
+#| label: setup
+#| message: false
+library(tidyverse)
+library(primer.data)
+library(brms)
+library(tidybayes)
+library(gtsummary)
+library(stringr)
+```
+<!-- Wisdom: -->
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+<!-- Question: Which crimes are most likely to result in a culprit being found? -->
+
+<!-- Specific Question: If someone was to be the victim of a crime in Britain, how likely would a culprit be found? -->
+
+<!-- Units: Each Crime in Britain -->
+<!-- Outcome: Whether the culprit was found or not. -->
+<!-- Covariates: Crime Type, Location -->
+
+Being a victim of a crime is a common fear for tourists when visiting places like England. To determine how often suspects are found for each type of crime, I used data from the UK police database for the month of May. I modeled SuspectIdentified, a TRUE/FALSE variable that listed whether a suspect was found and/or punished for a crime, as a logistic function of crime type. This lead me to the conclusion that the crimes that (the average tourist could possibly be a victim of) have the highest rate of catching a culprit are Burglary and theft with 3.06% and 2.87% on average respectively. These values could be as high as 7.71% or low as .9% for Burglary and high as 22.1% or low as .1% for Theft.
+
+```{r}
+#| label: data
+x <- read.csv("West_Midlands_Crime.csv")
+set.seed(123)
+crime <- x |> sample_frac(.10) |> 
+  mutate(type = as.factor(Crime.type), outcome = Last.outcome.category, area = LSOA.name)|> filter(outcome != "")
+crime <- crime |> mutate(SuspectIdentified = ifelse(outcome %in% c(
+    "Offender given a caution",
+    "Awaiting court outcome", 
+    "Action to be taken by another organisation", 
+    "Awaiting court outcome",
+"Formal action is not in the public interest",
+"Further action is not in the public interest"), 1, 0)) |> 
+  select(SuspectIdentified, type, area)
+```
+
+```{r}
+ndata <- tibble(type = c( "Bicycle theft",
+ "Burglary", 
+ "Criminal damage and arson", 
+                      "Drugs",
+                 "Other crime", "Other theft", 
+                      "Possession of weapons",  
+                 "Public order",  
+                     "Robbery",
+                 "Shoplifting",  
+       "Theft from the person",
+               "Vehicle crime", "Violence and sexual offences"))
+```
+
+```{r}
+#| cache: true
+#| label: model
+#| warning: false
+fit <- brm(formula = SuspectIdentified ~ type,
+           data = crime,
+           family = bernoulli(),
+           iter = 1200,
+           warmup = 600,
+           chains = 2,
+           refresh = 0,
+           silent = 2,
+           seed = 99)
+```
+
+```{r}
+model_data <- fit |> add_epred_draws(newdata = ndata)
+# model_data |> filter(.epred >= .001) |> 
+#   summarize(lowst_value = min(.epred, na.rm = TRUE))
+# max_epred_per_type <- model_data %>%
+#   group_by(type) %>%
+#   summarize(max_epred = max(.epred)) # This code was used to determine high and low confidence intervals.
+
+model_data |>   filter(.epred >= 0.001) |>
+ggplot(aes(y = type, x = .epred)) +
+  stat_slab(aes(fill = type), position = "dodge", show.legend = FALSE) +
+  scale_x_log10() +
+  labs(
+    title = "Average Percentage Chances of Culprits being found",
+    subtitle = "The amount of crimes that find a culprit seem to be low",
+    y = "Type",
+    x = "Probability of Suspect Identification", fill = NULL
+  ) +
+  theme_minimal() +
+  theme(axis.text.y = element_text(angle = 45, hjust = 1))
+```
+

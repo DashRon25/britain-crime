@@ -95,7 +95,15 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
-<span class="menu-text">About</span></a>
+<span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Sources.html"> 
+<span class="menu-text">Sources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Model.html"> 
+<span class="menu-text">Model</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -145,20 +153,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- Units: Each Crime in Britain -->
 <!-- Outcome: Whether the culprit was found or not. -->
 <!-- Covariates: Crime Type, Location -->
-<div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Computation failed in `stat_summary()`.
-Caused by error in `fun.data()`:
-! The package "Hmisc" is required.</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="analysis_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
+<p>Being a victim of a crime is a common fear for tourists when visiting places like England. To determine how often suspects are found for each type of crime, I used data from the UK police database for the month of May. I modeled SuspectIdentified, a TRUE/FALSE variable that listed whether a suspect was found and/or punished for a crime, as a logistic function of crime type. This lead me to the conclusion that the crimes that (the average tourist could possibly be a victim of) have the highest rate of catching a culprit are Burglary and theft with 3.06% and 2.87% on average respectively. These values could be as high as 7.71% or low as .9% for Burglary and high as 22.1% or low as .1% for Theft.</p>
 
 
 
@@ -255,7 +250,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/40556137-6902-4d3a-bfbe-01bbc81cda75\.netlify\.app\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

@@ -1,23 +1,37 @@
 [
   {
-    "objectID": "analysis.html",
-    "href": "analysis.html",
-    "title": "analysis",
+    "objectID": "Sources.html",
+    "href": "Sources.html",
+    "title": "Sources",
     "section": "",
-    "text": "Warning: Computation failed in `stat_summary()`.\nCaused by error in `fun.data()`:\n! The package \"Hmisc\" is required."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site"
+    "text": "This dataset was sourced from the UK Police Database.\nI selected crime data that was specifically located in the Midlands and Yorkshire area, an area of Britain that includes multiple counties (including London). As there were many crimes listed in the data, I I then took this sample and filtered out any irrelevant columns such as the exact crime ID code, and selected the columns that detailed the type of crime and eventual outcome. After filtering out these columns, I made a new column using the previous column of outcome to create the column SuspectIdentified, a binary variable that listed whether a suspect was properly found or not. These columns were eventually used to create the model which is further described in its own page."
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Britain Crime Analysis",
+    "title": "analysis",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "Being a victim of a crime is a common fear for tourists when visiting places like England. To determine how often suspects are found for each type of crime, I used data from the UK police database for the month of May. I modeled SuspectIdentified, a TRUE/FALSE variable that listed whether a suspect was found and/or punished for a crime, as a logistic function of crime type. This lead me to the conclusion that the crimes that (the average tourist could possibly be a victim of) have the highest rate of catching a culprit are Burglary and theft with 3.06% and 2.87% on average respectively. These values could be as high as 7.71% or low as .9% for Burglary and high as 22.1% or low as .1% for Theft."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About Me",
+    "section": "",
+    "text": "This project was made by me, Ronit Dash, a junior at Chattahoochee High School. You can contact me at dash.ronit@gmail.com.\n\nAbout this Project\nThis project can also be found in this repository.\nThis project was made as a part of Kane’s Data Science Bootcamp."
+  },
+  {
+    "objectID": "analysis.html",
+    "href": "analysis.html",
+    "title": "analysis",
+    "section": "",
+    "text": "Being a victim of a crime is a common fear for tourists when visiting places like England. To determine how often suspects are found for each type of crime, I used data from the UK police database for the month of May. I modeled SuspectIdentified, a TRUE/FALSE variable that listed whether a suspect was found and/or punished for a crime, as a logistic function of crime type. This lead me to the conclusion that the crimes that (the average tourist could possibly be a victim of) have the highest rate of catching a culprit are Burglary and theft with 3.06% and 2.87% on average respectively. These values could be as high as 7.71% or low as .9% for Burglary and high as 22.1% or low as .1% for Theft."
+  },
+  {
+    "objectID": "Model.html",
+    "href": "Model.html",
+    "title": "Model",
+    "section": "",
+    "text": "\\[\n\\text{SuspectIdentified}_i = \\beta_0 + \\beta_1 \\cdot \\text{type}_i + \\epsilon_i\n\\]\n\n\n\n\n\n\n\n\n\n\n\n\n\nCharacteristic\nBeta\n95% CI\n1\n\n\n\n\ntype\n\n\n\n\n\n\n    Bicycle theft\n—\n—\n\n\n    Burglary\n231\n7.2, 519\n\n\n    typeCriminaldamageandarson\n230\n7.6, 519\n\n\n    Drugs\n232\n9.5, 520\n\n\n    typeOthercrime\n231\n9.0, 519\n\n\n    typeOthertheft\n229\n6.1, 517\n\n\n    typePossessionofweapons\n232\n9.9, 521\n\n\n    typePublicorder\n231\n8.7, 519\n\n\n    Robbery\n70\n-711, 464\n\n\n    Shoplifting\n232\n9.6, 520\n\n\n    typeTheftfromtheperson\n230\n7.0, 519\n\n\n    typeVehiclecrime\n229\n7.2, 518\n\n\n    typeViolenceandsexualoffences\n231\n8.4, 519\n\n\n\n1\nCI = Credible Interval"
   }
 ]

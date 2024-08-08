@@ -1,7 +1,5 @@
 ---
-title: "analysis"
-author: "Ronit Dash"
-format: html
+title: "Model"
 execute:
   echo: false
 ---
@@ -16,17 +14,6 @@ library(tidybayes)
 library(gtsummary)
 library(stringr)
 ```
-<!-- Wisdom: -->
-
-<!-- Question: Which crimes are most likely to result in a culprit being found? -->
-
-<!-- Specific Question: If someone was to be the victim of a crime in Britain, how likely would a culprit be found? -->
-
-<!-- Units: Each Crime in Britain -->
-<!-- Outcome: Whether the culprit was found or not. -->
-<!-- Covariates: Crime Type, Location -->
-
-Being a victim of a crime is a common fear for tourists when visiting places like England. To determine how often suspects are found for each type of crime, I used data from the UK police database for the month of May. I modeled SuspectIdentified, a TRUE/FALSE variable that listed whether a suspect was found and/or punished for a crime, as a logistic function of crime type. This lead me to the conclusion that the crimes that (the average tourist could possibly be a victim of) have the highest rate of catching a culprit are Burglary and theft with 3.06% and 2.87% on average respectively. These values could be as high as 7.71% or low as .9% for Burglary and high as 22.1% or low as .1% for Theft.
 
 ```{r}
 #| label: data
@@ -41,7 +28,7 @@ crime <- crime |> mutate(SuspectIdentified = ifelse(outcome %in% c(
     "Awaiting court outcome",
 "Formal action is not in the public interest",
 "Further action is not in the public interest"), 1, 0)) |> 
-  select(SuspectIdentified, type)
+  select(SuspectIdentified, type, area)
 ```
 
 ```{r}
@@ -58,6 +45,9 @@ ndata <- tibble(type = c( "Bicycle theft",
                "Vehicle crime", "Violence and sexual offences"))
 ```
 
+$$
+\text{SuspectIdentified}_i = \beta_0 + \beta_1 \cdot \text{type}_i + \epsilon_i
+$$
 ```{r}
 #| cache: true
 #| label: model
@@ -65,7 +55,7 @@ ndata <- tibble(type = c( "Bicycle theft",
 fit <- brm(formula = SuspectIdentified ~ type,
            data = crime,
            family = bernoulli(),
-           iter = 1200, # The altered values were used to lower load times.
+           iter = 1200,
            warmup = 600,
            chains = 2,
            refresh = 0,
@@ -73,5 +63,7 @@ fit <- brm(formula = SuspectIdentified ~ type,
            seed = 99)
 ```
 
-
+```{r}
+tbl_regression(fit)
+```
 

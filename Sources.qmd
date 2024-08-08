@@ -1,0 +1,7 @@
+---
+title: "Sources"
+---
+
+This dataset was sourced from the [UK Police Database](https://data.police.uk).
+
+I selected crime data that was specifically located in the Midlands and Yorkshire area, an area of Britain that includes multiple counties (including London). As there were many crimes listed in the data, I  I then took this sample and filtered out any irrelevant columns such as the exact crime ID code, and selected the columns that detailed the type of crime and eventual outcome. After filtering out these columns, I made a new column using the previous column of outcome to create the column SuspectIdentified, a binary variable that listed whether a suspect was properly found or not. These columns were eventually used to create the model which is further described in its own page.

@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: 40556137-6902-4d3a-bfbe-01bbc81cda75
+      url: 'https://dashr.quarto.pub/england-crime-analysis'
